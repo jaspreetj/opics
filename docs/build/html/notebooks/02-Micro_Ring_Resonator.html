@@ -1,0 +1,484 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Micro Ring Resonator (MRR) &#8212; OPICS  documentation</title>
+
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+
+
+
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_contributors.css" />
+    <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contributors" href="../contributors.html" />
+    <link rel="prev" title="Mach-Zehnder Interferometer (MZI)" href="01-Mach-Zehnder_Interferometer.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+
+
+    <!-- Google Analytics -->
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+
+    <div class="container-fluid" id="banner"></div>
+
+
+
+    <div class="container-xl">
+      <div class="row">
+
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+
+
+
+      <img src="../_static/opics_logo.png" class="logo" alt="logo">
+
+
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Quickstart
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="00-Quickstart.html">
+   OPICS Quickstart
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tutorials
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="01-Mach-Zehnder_Interferometer.html">
+   Mach-Zehnder Interferometer (MZI)
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Micro Ring Resonator (MRR)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Contributors
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributors.html">
+   Contributors
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  API documentation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../opics.html">
+   Public API: opics package
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+
+
+
+
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+
+            </div>
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/notebooks/02-Micro_Ring_Resonator.ipynb.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#import-component-library">
+   Import component library
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#define-network">
+   Define network
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#add-circuit-components">
+   Add circuit components
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#define-circuit-connectivity">
+   Define circuit connectivity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#simulate-the-circuit">
+   Simulate the circuit
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#visualize-the-simulation-result">
+   Visualize the simulation result
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Micro Ring Resonator (MRR)</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#import-component-library">
+   Import component library
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#define-network">
+   Define network
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#add-circuit-components">
+   Add circuit components
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#define-circuit-connectivity">
+   Define circuit connectivity
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#simulate-the-circuit">
+   Simulate the circuit
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#visualize-the-simulation-result">
+   Visualize the simulation result
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+              <div>
+
+  <div class="tex2jax_ignore mathjax_ignore section" id="micro-ring-resonator-mrr">
+<h1>Micro Ring Resonator (MRR)<a class="headerlink" href="#micro-ring-resonator-mrr" title="Permalink to this headline">¶</a></h1>
+<p><strong>We use SiEPIC EBeam library in this tutorial.</strong></p>
+<p>This notebook walks through the process of setting up and simulating a micro ring resonator device using the OPICS package.</p>
+<p>A ring resonator consists of an optical waveguide which is looped back on itself, such that a resonance occurs when the optical path length of the resonator is exactly a whole number of wavelengths. In simple terms, an all pass ring resonator can be thought of consisting input/output components, evanescent coupling region like a directional coupler, and a waveguide (as shown below).
+<img style="width:70%;height:50%;" src="../_static/mrr1.svg"></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">opics</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">9</span><span class="n">d90595361f1</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="kn">import</span> <span class="nn">opics</span>
+
+<span class="ne">c</span>:\users\jeida\documents\github\dev-jaspreetj\opics\opics\__init__.py in &lt;module&gt;
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="sd">&quot;&quot;&quot;Top-level package for OPICS.&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">opics</span> <span class="kn">import</span> <span class="n">libraries</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">opics.network</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">opics.utils</span> <span class="kn">import</span> <span class="n">netlistParser</span>
+
+<span class="ne">c</span>:\users\jeida\documents\github\dev-jaspreetj\opics\opics\libraries\__init__.py in &lt;module&gt;
+<span class="g g-Whitespace">     </span><span class="mi">32</span>
+<span class="g g-Whitespace">     </span><span class="mi">33</span>
+<span class="ne">---&gt; </span><span class="mi">34</span> <span class="n">installed_libraries</span> <span class="o">=</span> <span class="n">_import_external_libraries</span><span class="p">(</span><span class="n">library_catalogue</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">35</span>
+<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+
+<span class="nn">c:\users\jeida\documents\github\dev-jaspreetj\opics\opics\libraries\__init__.py</span> in <span class="ni">_import_external_libraries</span><span class="nt">(library_catalogue)</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span>         <span class="k">if</span> <span class="n">library_catalogue</span><span class="p">[</span><span class="n">each_lib</span><span class="p">][</span><span class="s2">&quot;installed&quot;</span><span class="p">]:</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span>             <span class="n">installed_libraries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">each_lib</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">26</span>             <span class="nb">globals</span><span class="p">()[</span><span class="n">each_lib</span><span class="p">]</span> <span class="o">=</span> <span class="n">_module_from_file</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span>                 <span class="n">each_lib</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span>                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">library_catalogue</span><span class="p">[</span><span class="n">each_lib</span><span class="p">][</span><span class="s1">&#39;library_path&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">library_catalogue</span><span class="p">[</span><span class="n">each_lib</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/__init__.py&quot;</span><span class="p">,</span>
+
+<span class="nn">c:\users\jeida\documents\github\dev-jaspreetj\opics\opics\libraries\__init__.py</span> in <span class="ni">_module_from_file</span><span class="nt">(module_name, file_path)</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span>     <span class="n">spec</span> <span class="o">=</span> <span class="n">_util</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span>     <span class="n">module</span> <span class="o">=</span> <span class="n">_util</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">16</span>     <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span>     <span class="k">return</span> <span class="n">module</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span>
+
+<span class="o">~</span>\<span class="n">Desktop</span>\<span class="n">delete</span><span class="o">/</span><span class="n">opics_ebeam</span><span class="o">-</span><span class="mf">0.3</span><span class="o">.</span><span class="mi">32</span><span class="o">//</span><span class="n">ebeam</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="ne">----&gt; </span><span class="mi">7</span> <span class="kn">from</span> <span class="nn">opics.globals</span> <span class="kn">import</span> <span class="n">f</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">opics.components</span> <span class="kn">import</span> <span class="n">componentModel</span><span class="p">,</span> <span class="n">Waveguide</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ndarray</span>
+
+<span class="ne">ImportError</span>: cannot import name &#39;f&#39; from &#39;opics.globals&#39; (c:\users\jeida\documents\github\dev-jaspreetj\opics\opics\globals.py)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="import-component-library">
+<h2>Import component library<a class="headerlink" href="#import-component-library" title="Permalink to this headline">¶</a></h2>
+<p>Import <code class="docutils literal notranslate"><span class="pre">ebeam</span></code> library from <code class="docutils literal notranslate"><span class="pre">libs</span></code> module.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ebeam</span> <span class="o">=</span> <span class="n">opics</span><span class="o">.</span><span class="n">libraries</span><span class="o">.</span><span class="n">ebeam</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="define-network">
+<h2>Define network<a class="headerlink" href="#define-network" title="Permalink to this headline">¶</a></h2>
+<p>Create an instance of <code class="docutils literal notranslate"><span class="pre">Network</span></code> class, which is used to add, connect, and simulate circuit components.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">circuit_name</span> <span class="o">=</span> <span class="s2">&quot;mrr&quot;</span>
+<span class="n">circuit</span> <span class="o">=</span> <span class="n">opics</span><span class="o">.</span><span class="n">Network</span><span class="p">(</span><span class="n">circuit_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="add-circuit-components">
+<h2>Add circuit components<a class="headerlink" href="#add-circuit-components" title="Permalink to this headline">¶</a></h2>
+<p>Add grating couplers, evanescent coupler (e.g. directional coupler halfring), and a waveguide. You can define custom frequency data points for a component as well (see the example for output_GC).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">input_gc</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">GC</span><span class="p">())</span>
+<span class="n">output_gc</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">GC</span><span class="p">())</span>
+<span class="n">wg</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">Waveguide</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mf">5e-6</span><span class="p">))</span>
+<span class="n">dc_halfring</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">DC_halfring</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="define-circuit-connectivity">
+<h2>Define circuit connectivity<a class="headerlink" href="#define-circuit-connectivity" title="Permalink to this headline">¶</a></h2>
+<p>In this section, we define the component connections. The connections are defined using <code class="docutils literal notranslate"><span class="pre">Network.connect</span></code>, e.g.<code class="docutils literal notranslate"><span class="pre">Network.connect(component1,</span> <span class="pre">component1_port,</span> <span class="pre">component2,</span> <span class="pre">component2_port)</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#connect components</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">input_gc</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dc_halfring</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dc_halfring</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">wg</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">wg</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dc_halfring</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dc_halfring</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">output_gc</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="simulate-the-circuit">
+<h2>Simulate the circuit<a class="headerlink" href="#simulate-the-circuit" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span> <span class="c1">#ignore all/complex number warnings from numpy or scipy</span>
+<span class="n">sim_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="c1">#simulate network</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">simulate_network</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;simulation finished in </span><span class="si">%s</span><span class="s2">s&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">sim_start</span><span class="p">,</span><span class="mi">2</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="visualize-the-simulation-result">
+<h2>Visualize the simulation result<a class="headerlink" href="#visualize-the-simulation-result" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">circuit</span><span class="o">.</span><span class="n">sim_result</span><span class="o">.</span><span class="n">plot_sparameters</span><span class="p">(</span><span class="n">show_freq</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;abs_sq&quot;</span><span class="p">,</span> <span class="n">ports</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+              </div>
+
+
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="01-Mach-Zehnder_Interferometer.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Mach-Zehnder Interferometer (MZI)</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../contributors.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Contributors</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+
+      By Jaspreet Jhoja<br/>
+
+        &copy; Copyright 2022, Jaspreet Jhoja.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
