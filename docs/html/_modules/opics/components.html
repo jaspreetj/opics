@@ -94,6 +94,16 @@
    OPICS Quickstart
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/03-Multiprocessing.html">
+   OPICS Multiprocessing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/04-Network_concatenation.html">
+   Network Concatenation
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -210,7 +220,9 @@
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ndarray</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">PosixPath</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">opics.globals</span> <span class="kn">import</span> <span class="n">F</span>
+<span class="kn">from</span> <span class="nn">opics.globals</span> <span class="kn">import</span> <span class="n">F</span><span class="p">,</span> <span class="n">C</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">binascii</span>
 
 
 <div class="viewcode-block" id="componentModel"><a class="viewcode-back" href="../../opics.html#opics.components.componentModel">[docs]</a><span class="k">class</span> <span class="nc">componentModel</span><span class="p">:</span>
@@ -231,7 +243,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">f</span><span class="p">:</span> <span class="n">ndarray</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span>
+        <span class="n">f</span><span class="p">:</span> <span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">nports</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
         <span class="n">s</span><span class="p">:</span> <span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">data_folder</span><span class="p">:</span> <span class="n">PosixPath</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -241,15 +253,18 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mi">299792458</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">F</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="n">C</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
         <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">nports</span><span class="p">,</span> <span class="n">nports</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">*</span> <span class="mf">1e6</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">componentParameters</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">componentID</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">component_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">4</span><span class="p">)))[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nports</span> <span class="o">=</span> <span class="n">nports</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">port_references</span> <span class="o">=</span> <span class="p">{}</span>
@@ -301,6 +316,7 @@
 <span class="sd">            port_number: Port number.</span>
 <span class="sd">            port_name: Custom port name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port_references</span><span class="p">[</span><span class="n">port_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">port_number</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">port_references</span><span class="p">[</span><span class="n">port_number</span><span class="p">]</span> <span class="o">=</span> <span class="n">port_name</span></div>
 
 <div class="viewcode-block" id="componentModel.interpolate_sparameters"><a class="viewcode-back" href="../../opics.html#opics.components.componentModel.interpolate_sparameters">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_sparameters</span><span class="p">(</span>
@@ -409,7 +425,11 @@
         <span class="k">return</span> <span class="n">temp_data</span></div>
 
 <div class="viewcode-block" id="componentModel.plot_sparameters"><a class="viewcode-back" href="../../opics.html#opics.components.componentModel.plot_sparameters">[docs]</a>    <span class="k">def</span> <span class="nf">plot_sparameters</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">ports</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show_freq</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;log&quot;</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ports</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">show_freq</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span>
+        <span class="n">interactive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Plot the component&#39;s S-parameters.</span>
 
@@ -421,6 +441,7 @@
 <span class="sd">                 with respect to frequency or wavelength. Defaults to True.</span>
 <span class="sd">            scale: Plotting y axis scale, options available:\</span>
 <span class="sd">                 [&quot;log&quot;, &quot;abs&quot;, &quot;abs_sq&quot;]. Defaults to &quot;log&quot;.</span>
+<span class="sd">            interactive: Make the plots interactive or not.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">ports_</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># ports the plot</span>
@@ -440,24 +461,61 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ports_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;S_</span><span class="si">%d</span><span class="s2">_</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">each</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">each</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">ports</span><span class="p">]</span>
 
-        <span class="k">for</span> <span class="n">each_port</span> <span class="ow">in</span> <span class="n">ports_</span><span class="p">:</span>
-            <span class="n">_</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">each_port</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span>
-                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-                    <span class="n">x_data</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[:,</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">j</span><span class="p">)])))</span>
-                <span class="p">)</span>
-                <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Transmission (dB)&quot;</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">&quot;abs&quot;</span><span class="p">:</span>
-                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[:,</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">j</span><span class="p">)]))</span>
-                <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Transmission (normalized)&quot;</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">&quot;abs_sq&quot;</span><span class="p">:</span>
-                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[:,</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">j</span><span class="p">)])))</span>
-                <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Transmission (normalized^2)&quot;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x_data</span><span class="p">),</span> <span class="n">right</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x_data</span><span class="p">))</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ports_</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">interactive</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">each_port</span> <span class="ow">in</span> <span class="n">ports_</span><span class="p">:</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">each_port</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span>
+                    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                        <span class="n">x_data</span><span class="p">,</span>
+                        <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[:,</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">j</span><span class="p">)]))),</span>
+                    <span class="p">)</span>
+                    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Transmission (dB)&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">&quot;abs&quot;</span><span class="p">:</span>
+                    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[:,</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">j</span><span class="p">)]))</span>
+                    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Transmission (normalized)&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">&quot;abs_sq&quot;</span><span class="p">:</span>
+                    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[:,</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">j</span><span class="p">)])))</span>
+                    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Transmission (normalized^2)&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x_data</span><span class="p">),</span> <span class="n">right</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x_data</span><span class="p">))</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ports_</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">hv</span>
+            <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+            <span class="kn">from</span> <span class="nn">bokeh.plotting</span> <span class="kn">import</span> <span class="n">show</span>
+
+            <span class="n">hv</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s2">&quot;bokeh&quot;</span><span class="p">)</span>
+            <span class="n">temp_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">ports</span><span class="o">=</span><span class="n">ports</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;lambda&quot;</span><span class="p">,</span> <span class="n">yscale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+            <span class="n">filtered_s</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="p">[[</span><span class="n">key</span><span class="p">,</span> <span class="n">temp_data</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">temp_data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s2">&quot;unit&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">key</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">filtered_s</span><span class="p">)</span>
+            <span class="n">master_plot</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">each_ydata</span> <span class="ow">in</span> <span class="n">ports_</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">master_plot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">master_plot</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">(</span>
+                        <span class="n">df</span><span class="p">,</span> <span class="s2">&quot;xdata&quot;</span><span class="p">,</span> <span class="n">each_ydata</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">each_ydata</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;hover&quot;</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">curve</span> <span class="o">=</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;xdata&quot;</span><span class="p">,</span> <span class="n">each_ydata</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">each_ydata</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span>
+                        <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;hover&quot;</span><span class="p">]</span>
+                    <span class="p">)</span>
+                    <span class="n">master_plot</span> <span class="o">=</span> <span class="n">master_plot</span> <span class="o">*</span> <span class="n">curve</span>
+
+            <span class="n">master_plot</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span>
+                <span class="n">ylabel</span><span class="o">=</span><span class="n">temp_data</span><span class="p">[</span><span class="s2">&quot;yunit&quot;</span><span class="p">],</span>
+                <span class="n">xlabel</span><span class="o">=</span><span class="n">temp_data</span><span class="p">[</span><span class="s2">&quot;xunit&quot;</span><span class="p">],</span>
+                <span class="n">responsive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">min_height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+                <span class="n">min_width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+                <span class="n">fontscale</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                <span class="n">max_width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+                <span class="n">max_height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">show</span><span class="p">(</span><span class="n">hv</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">master_plot</span><span class="p">))</span></div></div>
 </pre></div>
 
               </div>

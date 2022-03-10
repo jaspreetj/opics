@@ -94,6 +94,16 @@
    OPICS Quickstart
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/03-Multiprocessing.html">
+   OPICS Multiprocessing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../notebooks/04-Network_concatenation.html">
+   Network Concatenation
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -212,15 +222,15 @@
 
 <div class="viewcode-block" id="connect_s"><a class="viewcode-back" href="../../opics.html#opics.sparam_ops.connect_s">[docs]</a><span class="k">def</span> <span class="nf">connect_s</span><span class="p">(</span>
     <span class="n">A</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span>
-    <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">port_idx_A</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">B</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ndarray</span><span class="p">],</span>
-    <span class="n">l</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">port_idx_B</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">create_composite_matrix</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ndarray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    connect two n-port networks&#39; s-matrices together.</span>
 
-<span class="sd">    specifically, connect port `k` on network `A` to port `l` on network</span>
+<span class="sd">    specifically, connect port `port_idx_A` on network `A` to port `port_idx_B` on network</span>
 <span class="sd">    `B`. The resultant network has nports = (A.rank + B.rank-2). This</span>
 <span class="sd">    function operates on, and returns s-matrices. The function</span>
 <span class="sd">    :func:`connect` operates on :class:`Network` types.</span>
@@ -229,11 +239,11 @@
 <span class="sd">    -----------</span>
 <span class="sd">    A : :class:`numpy.ndarray`</span>
 <span class="sd">            S-parameter matrix of `A`, shape is fxnxn</span>
-<span class="sd">    k : int</span>
+<span class="sd">    port_idx_A : int</span>
 <span class="sd">            port index on `A` (port indices start from 0)</span>
 <span class="sd">    B : :class:`numpy.ndarray`</span>
 <span class="sd">            S-parameter matrix of `B`, shape is fxnxn</span>
-<span class="sd">    l : int</span>
+<span class="sd">    port_idx_B : int</span>
 <span class="sd">            port index on `B`</span>
 
 <span class="sd">    Returns</span>
@@ -258,7 +268,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">create_composite_matrix</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">port_idx_A</span> <span class="o">&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">port_idx_B</span> <span class="o">&gt;</span> <span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;port indices are out of range&quot;</span><span class="p">))</span>
 
         <span class="n">nf</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># num frequency points</span>
@@ -267,23 +277,23 @@
         <span class="n">nC</span> <span class="o">=</span> <span class="n">nA</span> <span class="o">+</span> <span class="n">nB</span>  <span class="c1"># num ports on C</span>
 
         <span class="c1"># create composite matrix, appending each sub-matrix diagonally</span>
-        <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nf</span><span class="p">,</span> <span class="n">nC</span><span class="p">,</span> <span class="n">nC</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">)</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nf</span><span class="p">,</span> <span class="n">nC</span><span class="p">,</span> <span class="n">nC</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
         <span class="n">C</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nA</span><span class="p">,</span> <span class="p">:</span><span class="n">nA</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">C</span><span class="p">[:,</span> <span class="n">nA</span><span class="p">:,</span> <span class="n">nA</span><span class="p">:]</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
         <span class="c1"># call innerconnect_s() on composit matrix C</span>
-        <span class="n">mat_result</span> <span class="o">=</span> <span class="n">innerconnect_s</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">nA</span> <span class="o">+</span> <span class="n">l</span><span class="p">)</span>
+        <span class="n">mat_result</span> <span class="o">=</span> <span class="n">innerconnect_s</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">,</span> <span class="n">nA</span> <span class="o">+</span> <span class="n">port_idx_B</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mat_result</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># call innerconnect_s() on non-composit matrix A</span>
-        <span class="k">return</span> <span class="n">innerconnect_s</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">innerconnect_s</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="innerconnect_s"><a class="viewcode-back" href="../../opics.html#opics.sparam_ops.innerconnect_s">[docs]</a><span class="k">def</span> <span class="nf">innerconnect_s</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">l</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ndarray</span><span class="p">:</span>
+<div class="viewcode-block" id="innerconnect_s"><a class="viewcode-back" href="../../opics.html#opics.sparam_ops.innerconnect_s">[docs]</a><span class="k">def</span> <span class="nf">innerconnect_s</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ndarray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    connect two ports of a single n-port network&#39;s s-matrix.</span>
 
-<span class="sd">    Specifically, connect port `k` to port `l` on `A`. This results in</span>
+<span class="sd">    Specifically, connect port `port_idx_A` to port `port_idx_B` on `A`. This results in</span>
 <span class="sd">    a (n-2)-port network.  This     function operates on, and returns</span>
 <span class="sd">    s-matrices. The function :func:`innerconnect` operates on</span>
 <span class="sd">    :class:`Network` types.</span>
@@ -292,9 +302,9 @@
 <span class="sd">    -----------</span>
 <span class="sd">    A : :class:`numpy.ndarray`</span>
 <span class="sd">        S-parameter matrix of `A`, shape is fxnxn</span>
-<span class="sd">    k : int</span>
+<span class="sd">    port_idx_A : int</span>
 <span class="sd">        port index on `A` (port indices start from 0)</span>
-<span class="sd">    l : int</span>
+<span class="sd">    port_idx_B : int</span>
 <span class="sd">        port index on `A`</span>
 
 <span class="sd">    Returns</span>
@@ -323,32 +333,123 @@
 <span class="sd">    http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=4131699&amp;isnumber=4131585</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">port_idx_A</span> <span class="o">&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">port_idx_B</span> <span class="o">&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">raise</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;port indices are out of range&quot;</span><span class="p">))</span>
 
     <span class="n">nA</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># num of ports on input s-matrix</span>
 
     <span class="c1"># create an empty s-matrix, to store the result</span>
-    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;complex&quot;</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+
+    <span class="c1"># A[:, i,j] = (2000, 2,2)</span>
 
     <span class="c1"># loop through ports and calulates resultant s-parameters</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nA</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nA</span><span class="p">):</span>
             <span class="n">C</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">A</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
-                <span class="o">*</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
-                <span class="o">+</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="o">-</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span>
-                <span class="o">-</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">l</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
-                <span class="o">+</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">l</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">l</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">l</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="o">*</span> <span class="p">(</span>
+                    <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_B</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_A</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">]</span>
+                    <span class="o">-</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_B</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_A</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="o">+</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_A</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+                <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">]</span>
+                <span class="o">*</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_B</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="o">-</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_A</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+                <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">]</span>
+                <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_B</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">]</span>
+                <span class="o">-</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">]</span>
+                <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_B</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+                <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_A</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">]</span>
+                <span class="o">+</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_B</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+                <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">]</span>
+                <span class="o">*</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_A</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_B</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_A</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">]</span>
+                <span class="o">-</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_B</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="o">*</span> <span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_A</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">)</span>
 
     <span class="c1"># remove ports that were `connected`</span>
-    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">l</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="p">(</span><span class="n">port_idx_A</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="p">(</span><span class="n">port_idx_A</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
 
-    <span class="c1"># ignore all from C[:,k,:], and C[:,l,:]</span>
-    <span class="c1"># ignore all from C[:,:,k], and C[:,:,l]</span>
+    <span class="c1"># ignore all from C[:,port_idx_A,:], and C[:,port_idx_B,:]</span>
+    <span class="c1"># ignore all from C[:,:,port_idx_A], and C[:,:,port_idx_B]</span>
+
+    <span class="k">return</span> <span class="n">C</span></div>
+
+
+<div class="viewcode-block" id="v_broadcast_sim"><a class="viewcode-back" href="../../opics.html#opics.sparam_ops.v_broadcast_sim">[docs]</a><span class="k">def</span> <span class="nf">v_broadcast_sim</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="n">port_idx_A</span> <span class="o">&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">port_idx_B</span> <span class="o">&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;port indices are out of range&quot;</span><span class="p">))</span>
+
+    <span class="n">nA</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># num of ports on input s-matrix</span>
+
+    <span class="c1"># create an empty s-matrix, to store the result</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+
+    <span class="c1"># fundamental elements to broadcast</span>
+    <span class="n">_terms</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_B</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">],</span>
+        <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_A</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">],</span>
+        <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_B</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_A</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nA</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_A</span><span class="p">,</span> <span class="p">:</span><span class="n">nA</span><span class="p">],</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nA</span><span class="p">))</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nA</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nA</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">],</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nA</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;g&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nA</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nA</span><span class="p">,</span> <span class="n">port_idx_A</span><span class="p">],</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nA</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;h&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nA</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="n">port_idx_B</span><span class="p">,</span> <span class="p">:</span><span class="n">nA</span><span class="p">],</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nA</span><span class="p">))</span>
+        <span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="n">_interm_terms</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;term1&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nA</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">])),</span>
+                <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;term2&quot;</span><span class="p">:</span> <span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;e&quot;</span><span class="p">]</span>
+        <span class="o">*</span> <span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;f&quot;</span><span class="p">]</span>
+        <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nA</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span>
+        <span class="s2">&quot;term3&quot;</span><span class="p">:</span> <span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;e&quot;</span><span class="p">]</span>
+        <span class="o">*</span> <span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;g&quot;</span><span class="p">]</span>
+        <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nA</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span>
+        <span class="s2">&quot;term4&quot;</span><span class="p">:</span> <span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;f&quot;</span><span class="p">]</span>
+        <span class="o">*</span> <span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span>
+        <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nA</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span>
+        <span class="s2">&quot;term5&quot;</span><span class="p">:</span> <span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;h&quot;</span><span class="p">]</span>
+        <span class="o">*</span> <span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;g&quot;</span><span class="p">]</span>
+        <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nA</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">_terms</span><span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">],</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span>
+    <span class="p">}</span>
+
+    <span class="c1"># A[:, i,j] = (2000, 2,2)</span>
+
+    <span class="c1"># loop through ports and calulates resultant s-parameters</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">A</span> <span class="o">*</span> <span class="n">_interm_terms</span><span class="p">[</span><span class="s2">&quot;term1&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">_interm_terms</span><span class="p">[</span><span class="s2">&quot;term2&quot;</span><span class="p">]</span>
+        <span class="o">-</span> <span class="n">_interm_terms</span><span class="p">[</span><span class="s2">&quot;term3&quot;</span><span class="p">]</span>
+        <span class="o">-</span> <span class="n">_interm_terms</span><span class="p">[</span><span class="s2">&quot;term4&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">_interm_terms</span><span class="p">[</span><span class="s2">&quot;term5&quot;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">/</span> <span class="n">_interm_terms</span><span class="p">[</span><span class="s2">&quot;term1&quot;</span><span class="p">]</span>
+
+    <span class="c1"># remove ports that were `connected`</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="p">(</span><span class="n">port_idx_A</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="p">(</span><span class="n">port_idx_A</span><span class="p">,</span> <span class="n">port_idx_B</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># ignore all from C[:,port_idx_A,:], and C[:,port_idx_B,:]</span>
+    <span class="c1"># ignore all from C[:,:,port_idx_A], and C[:,:,port_idx_B]</span>
 
     <span class="k">return</span> <span class="n">C</span></div>
 </pre></div>

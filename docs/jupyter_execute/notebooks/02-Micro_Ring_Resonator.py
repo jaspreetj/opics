@@ -8,7 +8,7 @@
 #    This notebook walks through the process of setting up and simulating a micro ring resonator device using the OPICS package. 
 # 
 #    A ring resonator consists of an optical waveguide which is looped back on itself, such that a resonance occurs when the optical path length of the resonator is exactly a whole number of wavelengths. In simple terms, an all pass ring resonator can be thought of consisting input/output components, evanescent coupling region like a directional coupler, and a waveguide (as shown below).
-# <img style="width:70%;height:50%;" src="../_static/mrr1.svg">
+# <img style="width:70%;height:50%;" src="../_static/_images/mrr1.svg">
 
 # In[1]:
 
@@ -45,10 +45,10 @@ circuit = opics.Network(circuit_name)
 
 
 
-input_gc = circuit.add_component(ebeam.GC())
-output_gc = circuit.add_component(ebeam.GC())
-wg = circuit.add_component(ebeam.Waveguide(length=np.pi*5e-6))
-dc_halfring = circuit.add_component(ebeam.DC_halfring())
+input_gc = circuit.add_component(ebeam.GC)
+output_gc = circuit.add_component(ebeam.GC)
+wg = circuit.add_component(ebeam.Waveguide, params=dict(length=np.pi*5e-6))
+dc_halfring = circuit.add_component(ebeam.DC_halfring)
 
 
 # ### Define circuit connectivity

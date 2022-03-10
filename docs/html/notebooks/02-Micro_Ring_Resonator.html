@@ -96,6 +96,16 @@
    OPICS Quickstart
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="03-Multiprocessing.html">
+   OPICS Multiprocessing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="04-Network_concatenation.html">
+   Network Concatenation
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -302,7 +312,7 @@
 <p><strong>We use SiEPIC EBeam library in this tutorial.</strong></p>
 <p>This notebook walks through the process of setting up and simulating a micro ring resonator device using the OPICS package.</p>
 <p>A ring resonator consists of an optical waveguide which is looped back on itself, such that a resonance occurs when the optical path length of the resonator is exactly a whole number of wavelengths. In simple terms, an all pass ring resonator can be thought of consisting input/output components, evanescent coupling region like a directional coupler, and a waveguide (as shown below).
-<img style="width:70%;height:50%;" src="../_static/mrr1.svg"></p>
+<img style="width:70%;height:50%;" src="../_static/_images/mrr1.svg"></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">warnings</span>
@@ -319,7 +329,7 @@
 / /_/ / ____// // /___ ___/ /
 \____/_/   /___/\____//____/
 
-OPICS version 0.2.1
+OPICS version 0.3.1
 </pre></div>
 </div>
 </div>
@@ -352,10 +362,10 @@ OPICS version 0.2.1
 <p>Add grating couplers, evanescent coupler (e.g. directional coupler halfring), and a waveguide. You can define custom frequency data points for a component as well (see the example for output_GC).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">input_gc</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">GC</span><span class="p">())</span>
-<span class="n">output_gc</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">GC</span><span class="p">())</span>
-<span class="n">wg</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">Waveguide</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mf">5e-6</span><span class="p">))</span>
-<span class="n">dc_halfring</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">DC_halfring</span><span class="p">())</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">input_gc</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">GC</span><span class="p">)</span>
+<span class="n">output_gc</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">GC</span><span class="p">)</span>
+<span class="n">wg</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">Waveguide</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mf">5e-6</span><span class="p">))</span>
+<span class="n">dc_halfring</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">DC_halfring</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

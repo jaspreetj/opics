@@ -95,6 +95,16 @@
    OPICS Quickstart
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="notebooks/03-Multiprocessing.html">
+   OPICS Multiprocessing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="notebooks/04-Network_concatenation.html">
+   Network Concatenation
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -326,7 +336,7 @@
 <span id="opics-components-module"></span><h2><code class="code docutils literal notranslate"><span class="pre">opics.components</span></code> module<a class="headerlink" href="#module-opics.components" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="opics.components.componentModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">opics.components.</span></span><span class="sig-name descname"><span class="pre">componentModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([1.99861639e+14,</span> <span class="pre">1.99855390e+14,</span> <span class="pre">1.99849141e+14,</span> <span class="pre">...,</span> <span class="pre">1.87382784e+14,</span> <span class="pre">1.87376535e+14,</span> <span class="pre">1.87370286e+14])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nports</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparam_attr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/components.html#componentModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.components.componentModel" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">opics.components.</span></span><span class="sig-name descname"><span class="pre">componentModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nports</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparam_attr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/components.html#componentModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.components.componentModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Defines the base component model class used to create new components            for a library.</p>
 <dl class="field-list simple">
@@ -406,7 +416,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="opics.components.componentModel.plot_sparameters">
-<span class="sig-name descname"><span class="pre">plot_sparameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ports</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/components.html#componentModel.plot_sparameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.components.componentModel.plot_sparameters" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_sparameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ports</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interactive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/components.html#componentModel.plot_sparameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.components.componentModel.plot_sparameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the component’s S-parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -414,6 +424,7 @@
 <li><p><strong>ports</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]]]) – List of lists that contains the desired                 S-parameters, e.g., [[1,1],[1,2],[2,1],[2,2]].                      Defaults to None.</p></li>
 <li><p><strong>show_freq</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Flag to determine whether to plot                 with respect to frequency or wavelength. Defaults to True.</p></li>
 <li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Plotting y axis scale, options available:                 [“log”, “abs”, “abs_sq”]. Defaults to “log”.</p></li>
+<li><p><strong>interactive</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Make the plots interactive or not.</p></li>
 </ul>
 </dd>
 </dl>
@@ -462,22 +473,33 @@
 <span id="opics-network-module"></span><h2>opics.network module<a class="headerlink" href="#module-opics.network" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="opics.network.Network">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">opics.network.</span></span><span class="sig-name descname"><span class="pre">Network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/network.html#Network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.network.Network" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">opics.network.</span></span><span class="sig-name descname"><span class="pre">Network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mp_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'close_pool':</span> <span class="pre">False,</span> <span class="pre">'enabled':</span> <span class="pre">False,</span> <span class="pre">'proc_count':</span> <span class="pre">0}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/network.html#Network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.network.Network" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Specifies the network.</p>
+<p>Defines a circuit or a network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>network_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Define the network name.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Define the network name.</p></li>
+<li><p><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>]) – Frequency data points.</p></li>
+<li><p><strong>mp_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>) – <p>Enable/Disable multiprocessing (disabled by default);                    Expects the following information:</p>
+<ol class="arabic simple">
+<li><p>”enabled” : bool - enable/disable multiprocessing,</p></li>
+<li><p>”proc_count”: int - process count</p></li>
+<li><p>”close_pool”: bool - Should the solver terminate all the processes after the simulation is finished.</p></li>
+</ol>
+</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="opics.network.Network.add_component">
-<span class="sig-name descname"><span class="pre">add_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/network.html#Network.add_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.network.Network.add_component" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/network.html#Network.add_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.network.Network.add_component" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds component to a network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cls</strong> (<a class="reference internal" href="#opics.components.componentModel" title="opics.components.componentModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">componentModel</span></code></a>) – An instance of componentModel class.</p></li>
+<li><p><strong>component</strong> (<a class="reference internal" href="#opics.components.componentModel" title="opics.components.componentModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">componentModel</span></code></a>) – An instance of componentModel class.</p></li>
+<li><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>) – Component parameter values.</p></li>
 <li><p><strong>component_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Custom component id tag.</p></li>
 </ul>
 </dd>
@@ -486,15 +508,35 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="opics.network.Network.connect">
-<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_B</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/network.html#Network.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.network.Network.connect" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_A_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_B_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_B</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/network.html#Network.connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.network.Network.connect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connects two components together.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>component_A</strong> (<a class="reference internal" href="#opics.components.componentModel" title="opics.components.componentModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">componentModel</span></code></a>) – An instance of componentModel class.</p></li>
+<li><p><strong>component_A_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference internal" href="#opics.components.componentModel" title="opics.components.componentModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">componentModel</span></code></a>]) – A component ID or an instance of componentModel class.</p></li>
 <li><p><strong>port_A</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Port number of component_A</p></li>
-<li><p><strong>component_B</strong> (<a class="reference internal" href="#opics.components.componentModel" title="opics.components.componentModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">componentModel</span></code></a>) – An instance of componentModel class.</p></li>
+<li><p><strong>component_B_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference internal" href="#opics.components.componentModel" title="opics.components.componentModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">componentModel</span></code></a>]) – A component ID or an instance of componentModel class.</p></li>
 <li><p><strong>port_B</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Port number of component_B</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="opics.network.Network.disable_mp">
+<span class="sig-name descname"><span class="pre">disable_mp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/network.html#Network.disable_mp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.network.Network.disable_mp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disables OPICS multiprocessing</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="opics.network.Network.enable_mp">
+<span class="sig-name descname"><span class="pre">enable_mp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">close_pool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/network.html#Network.enable_mp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.network.Network.enable_mp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables OPICS multiprocessing</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>process_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Number of processes to start. Leave the default value if not sure (let the system decide). Otherwise, use <cite>multiprocessing.cpu_count()</cite> to know the maximum number of processes that can be run safely.</p></li>
+<li><p><strong>close_pool</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Whether to terminate all the processes after the simulation is done.</p></li>
 </ul>
 </dd>
 </dl>
@@ -536,15 +578,53 @@
 
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="opics.network.bulk_add_component">
+<span class="sig-prename descclassname"><span class="pre">opics.network.</span></span><span class="sig-name descname"><span class="pre">bulk_add_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/network.html#bulk_add_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.network.bulk_add_component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows for bulk adding of components</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> (<a class="reference internal" href="#opics.network.Network" title="opics.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>) – Network to add components to.</p></li>
+<li><p><strong>components_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>]) – A list of dictionaries including component class reference, parameter data, and component id</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opics.network.inst_components">
+<span class="sig-prename descclassname"><span class="pre">opics.network.</span></span><span class="sig-name descname"><span class="pre">inst_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/network.html#inst_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.network.inst_components" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a component class, component parameter data, and component id, returns an instance of the component class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>component_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) – <p>{“component”: component_class, “params”: component_parameters, “component_id”, custom_component_id}</p>
+<p>Example: {“component”: ebeam.Waveguide, “params”:{“f”: circuit.f, “length”: 10e-6}, “component_id”: “test_waveguide”}</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opics.network.solve_tasks">
+<span class="sig-prename descclassname"><span class="pre">opics.network.</span></span><span class="sig-name descname"><span class="pre">solve_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/network.html#solve_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.network.solve_tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulates a connection, either shared by two different components or by the same component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>) – A list with the following elements:                [components_connected,                 net_to_port_data,                 components_nets].</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="module-opics.sparam_ops">
 <span id="opics-sparam-ops-module"></span><h2>opics.sparam_ops module<a class="headerlink" href="#module-opics.sparam_ops" title="Permalink to this headline">¶</a></h2>
 <p>Functions operating on s-parameter matrices</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="opics.sparam_ops.connect_s">
-<span class="sig-prename descclassname"><span class="pre">opics.sparam_ops.</span></span><span class="sig-name descname"><span class="pre">connect_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_composite_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/sparam_ops.html#connect_s"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.sparam_ops.connect_s" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">opics.sparam_ops.</span></span><span class="sig-name descname"><span class="pre">connect_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_idx_A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_idx_B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_composite_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/sparam_ops.html#connect_s"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.sparam_ops.connect_s" title="Permalink to this definition">¶</a></dt>
 <dd><p>connect two n-port networks’ s-matrices together.</p>
-<p>specifically, connect port <cite>k</cite> on network <cite>A</cite> to port <cite>l</cite> on network
+<p>specifically, connect port <cite>port_idx_A</cite> on network <cite>A</cite> to port <cite>port_idx_B</cite> on network
 <cite>B</cite>. The resultant network has nports = (A.rank + B.rank-2). This
 function operates on, and returns s-matrices. The function
 <code class="xref py py-func docutils literal notranslate"><span class="pre">connect()</span></code> operates on <code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code> types.</p>
@@ -552,9 +632,9 @@ function operates on, and returns s-matrices. The function
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>A</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – S-parameter matrix of <cite>A</cite>, shape is fxnxn</p></li>
-<li><p><strong>k</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – port index on <cite>A</cite> (port indices start from 0)</p></li>
+<li><p><strong>port_idx_A</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – port index on <cite>A</cite> (port indices start from 0)</p></li>
 <li><p><strong>B</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – S-parameter matrix of <cite>B</cite>, shape is fxnxn</p></li>
-<li><p><strong>l</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – port index on <cite>B</cite></p></li>
+<li><p><strong>port_idx_B</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – port index on <cite>B</cite></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -581,9 +661,9 @@ details about the implementation</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="opics.sparam_ops.innerconnect_s">
-<span class="sig-prename descclassname"><span class="pre">opics.sparam_ops.</span></span><span class="sig-name descname"><span class="pre">innerconnect_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/sparam_ops.html#innerconnect_s"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.sparam_ops.innerconnect_s" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">opics.sparam_ops.</span></span><span class="sig-name descname"><span class="pre">innerconnect_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_idx_A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_idx_B</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/sparam_ops.html#innerconnect_s"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.sparam_ops.innerconnect_s" title="Permalink to this definition">¶</a></dt>
 <dd><p>connect two ports of a single n-port network’s s-matrix.</p>
-<p>Specifically, connect port <cite>k</cite> to port <cite>l</cite> on <cite>A</cite>. This results in
+<p>Specifically, connect port <cite>port_idx_A</cite> to port <cite>port_idx_B</cite> on <cite>A</cite>. This results in
 a (n-2)-port network.  This     function operates on, and returns
 s-matrices. The function <code class="xref py py-func docutils literal notranslate"><span class="pre">innerconnect()</span></code> operates on
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code> types.</p>
@@ -591,8 +671,8 @@ s-matrices. The function <code class="xref py py-func docutils literal notransla
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>A</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – S-parameter matrix of <cite>A</cite>, shape is fxnxn</p></li>
-<li><p><strong>k</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – port index on <cite>A</cite> (port indices start from 0)</p></li>
-<li><p><strong>l</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – port index on <cite>A</cite></p></li>
+<li><p><strong>port_idx_A</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – port index on <cite>A</cite> (port indices start from 0)</p></li>
+<li><p><strong>port_idx_B</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – port index on <cite>A</cite></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -621,6 +701,16 @@ Aug 1989.
 Multiports,” Microwave Conference, 1981. 11th European , vol., no., pp.700-704,
 7-11 Sept. 1981.
 <a class="reference external" href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=4131699&amp;isnumber=4131585">http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=4131699&amp;isnumber=4131585</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="opics.sparam_ops.v_broadcast_sim">
+<span class="sig-prename descclassname"><span class="pre">opics.sparam_ops.</span></span><span class="sig-name descname"><span class="pre">v_broadcast_sim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_idx_A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_idx_B</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/opics/sparam_ops.html#v_broadcast_sim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#opics.sparam_ops.v_broadcast_sim" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

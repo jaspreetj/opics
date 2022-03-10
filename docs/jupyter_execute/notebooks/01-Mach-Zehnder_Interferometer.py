@@ -9,7 +9,7 @@
 # 
 #    A mach-zehnder interferometer is a basic waveguide interference device. It consists of two couplers (or Y branches) connected by two waveguides of different length (see below). The difference between the two waveguide lengths causes differential delay, which contributes to the frequency dependent interference pattern.
 # 
-# <img style="width:70%;height:50%;" src="../_static/MZI1.svg">
+# <img style="width:70%;height:50%;" src="../_static/_images/MZI1.svg">
 
 # In[1]:
 
@@ -35,8 +35,10 @@ ebeam = opics.libraries.ebeam
 # In[3]:
 
 
+#defining custom frequency data points for a component
+f = np.linspace(opics.C*1e6/1.5, opics.C*1e6/1.6, 2000)
 circuit_name = "mzi"
-circuit = opics.Network()
+circuit = opics.Network(network_id=circuit_name, f=f)
 
 
 # In[4]:
@@ -52,16 +54,15 @@ get_ipython().run_line_magic('pinfo', 'ebeam.Waveguide')
 # In[5]:
 
 
-#defining custom frequency data points for a component
-f = np.linspace(opics.C*1e6/1.5, opics.C*1e6/1.6, 2000)
+
 
 #define component instances
-input_gc  = circuit.add_component(ebeam.GC(f))
-y1 =   circuit.add_component(ebeam.Y(f))
-wg1 =  circuit.add_component(ebeam.Waveguide(f,length=50e-6))
-wg2 =  circuit.add_component(ebeam.Waveguide(f,length=150e-6))
-y2 =  circuit.add_component(ebeam.Y(f))
-output_gc = circuit.add_component(ebeam.GC(f))
+input_gc  = circuit.add_component(ebeam.GC)
+y1 =   circuit.add_component(ebeam.Y)
+wg1 =  circuit.add_component(ebeam.Waveguide, params=dict(length=50e-6))
+wg2 =  circuit.add_component(ebeam.Waveguide, params=dict(length=150e-6))
+y2 =  circuit.add_component(ebeam.Y)
+output_gc = circuit.add_component(ebeam.GC)
 
 
 # ### Define circuit connectivity
@@ -101,10 +102,4 @@ print("simulation finished in %ss"%(str(round(time.time()-sim_start,2))))
 
 
 circuit.sim_result.plot_sparameters(show_freq=False, scale="log")
-
-
-# In[ ]:
-
-
-
 

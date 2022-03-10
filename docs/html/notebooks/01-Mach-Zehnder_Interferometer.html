@@ -45,7 +45,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Micro Ring Resonator (MRR)" href="02-Micro_Ring_Resonator.html" />
-    <link rel="prev" title="OPICS Quickstart" href="00-Quickstart.html" />
+    <link rel="prev" title="Network Concatenation" href="04-Network_concatenation.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -94,6 +94,16 @@
  <li class="toctree-l1">
   <a class="reference internal" href="00-Quickstart.html">
    OPICS Quickstart
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="03-Multiprocessing.html">
+   OPICS Multiprocessing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="04-Network_concatenation.html">
+   Network Concatenation
   </a>
  </li>
 </ul>
@@ -302,7 +312,7 @@
 <p><strong>We use SiEPIC EBeam library in this tutorial.</strong></p>
 <p>This notebook walks through the process of setting up and simulating a mach-zehnder interferometer device using the OPICS package.</p>
 <p>A mach-zehnder interferometer is a basic waveguide interference device. It consists of two couplers (or Y branches) connected by two waveguides of different length (see below). The difference between the two waveguide lengths causes differential delay, which contributes to the frequency dependent interference pattern.</p>
-<img style="width:70%;height:50%;" src="../_static/MZI1.svg"><div class="cell docutils container">
+<img style="width:70%;height:50%;" src="../_static/_images/MZI1.svg"><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -318,7 +328,7 @@
 / /_/ / ____// // /___ ___/ /
 \____/_/   /___/\____//____/
 
-OPICS version 0.2.1
+OPICS version 0.3.1
 </pre></div>
 </div>
 </div>
@@ -339,8 +349,10 @@ OPICS version 0.2.1
 <p>Create an instance of <code class="docutils literal notranslate"><span class="pre">Network</span></code> class, which is used to add, connect, and simulate circuit components.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">circuit_name</span> <span class="o">=</span> <span class="s2">&quot;mzi&quot;</span>
-<span class="n">circuit</span> <span class="o">=</span> <span class="n">opics</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#defining custom frequency data points for a component</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">opics</span><span class="o">.</span><span class="n">C</span><span class="o">*</span><span class="mf">1e6</span><span class="o">/</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">opics</span><span class="o">.</span><span class="n">C</span><span class="o">*</span><span class="mf">1e6</span><span class="o">/</span><span class="mf">1.6</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
+<span class="n">circuit_name</span> <span class="o">=</span> <span class="s2">&quot;mzi&quot;</span>
+<span class="n">circuit</span> <span class="o">=</span> <span class="n">opics</span><span class="o">.</span><span class="n">Network</span><span class="p">(</span><span class="n">network_id</span><span class="o">=</span><span class="n">circuit_name</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -358,16 +370,13 @@ OPICS version 0.2.1
 <p>Add grating couplers, 3dB power splitters (e.g. Y-splitter or Y-branch), and waveguides to circuit. You can define custom frequency data points for a component as well (see the example for output_GC).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#defining custom frequency data points for a component</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">opics</span><span class="o">.</span><span class="n">C</span><span class="o">*</span><span class="mf">1e6</span><span class="o">/</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">opics</span><span class="o">.</span><span class="n">C</span><span class="o">*</span><span class="mf">1e6</span><span class="o">/</span><span class="mf">1.6</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
-
-<span class="c1">#define component instances</span>
-<span class="n">input_gc</span>  <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">GC</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
-<span class="n">y1</span> <span class="o">=</span>   <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
-<span class="n">wg1</span> <span class="o">=</span>  <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">Waveguide</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">length</span><span class="o">=</span><span class="mf">50e-6</span><span class="p">))</span>
-<span class="n">wg2</span> <span class="o">=</span>  <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">Waveguide</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">length</span><span class="o">=</span><span class="mf">150e-6</span><span class="p">))</span>
-<span class="n">y2</span> <span class="o">=</span>  <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
-<span class="n">output_gc</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">GC</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#define component instances</span>
+<span class="n">input_gc</span>  <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">GC</span><span class="p">)</span>
+<span class="n">y1</span> <span class="o">=</span>   <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">wg1</span> <span class="o">=</span>  <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">Waveguide</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mf">50e-6</span><span class="p">))</span>
+<span class="n">wg2</span> <span class="o">=</span>  <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">Waveguide</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mf">150e-6</span><span class="p">))</span>
+<span class="n">y2</span> <span class="o">=</span>  <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">output_gc</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">ebeam</span><span class="o">.</span><span class="n">GC</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -432,11 +441,11 @@ OPICS version 0.2.1
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="00-Quickstart.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="04-Network_concatenation.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">OPICS Quickstart</p>
+            <p class="prev-next-title">Network Concatenation</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="02-Micro_Ring_Resonator.html" title="next page">
