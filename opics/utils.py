@@ -278,9 +278,10 @@ def NetlistProcessor(spice_filepath, Network, libraries, c_, circuitData, verbos
         cls_attrs = deepcopy(comp_model.cls_attrs)  # class attributes
         comp_attrs = circuitData["compAttrs"][i]  # component attributes
         # clean up attributes
-        for each_attrs in cls_attrs.keys():
-            if each_attrs in comp_attrs.keys():
-                cls_attrs[each_attrs] = fromSI(comp_attrs[each_attrs])
+        for each_cls_attrs in cls_attrs.keys():
+            for each_comp_attrs in comp_attrs.keys():
+                if each_cls_attrs in each_comp_attrs:
+                    cls_attrs[each_cls_attrs] = fromSI(comp_attrs[each_comp_attrs])
 
         subckt.add_component(
             libs_comps[circuitData["compLibs"][i]][circuitData["compModels"][i]],
@@ -288,8 +289,10 @@ def NetlistProcessor(spice_filepath, Network, libraries, c_, circuitData, verbos
             component_id=circuitData["compLabels"][i],
         )
 
-    # add circuit netlist
-    subckt.global_netlist = circuitData["circuitNets"]
+        # add circuit netlist
+        subckt.global_netlist[circuitData["compLabels"][i]] = circuitData[
+            "circuitNets"
+        ][i]
     # add unique net component connections
     subckt.current_connections = circuitData["circuitConns"]
 
