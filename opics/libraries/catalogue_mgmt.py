@@ -1,5 +1,6 @@
 import os as _os
 import sys as _sys
+from typing import Optional
 import yaml as _yaml
 import shutil as _shutil
 from io import BytesIO as _BytesIO
@@ -45,26 +46,32 @@ def remove_library(library_name):
     return False
 
 
-def download_library(library_name="", library_url="", library_path=""):
+def download_library(
+    library_name: str = "",
+    library_path: Optional[str] = "",
+    library_url: Optional[str] = "",
+):
     """
     Downloads OPICS libraries from GitHub.
 
     Args:
         library_name (str): The library name.
-        library_url (str): The library_url link to download the library ZIP file.
         library_path (str): The folder to extract the installed library to.
+        library_url (str): The library_url link to download the library ZIP file.
     """
 
     curr_dir = _Path(__file__).parent.resolve()
 
-    if library_url == "":
-        return False
+    # read _yaml file for available libraries in the catalogue
+    with open(curr_dir / "catalogue.yaml", "r") as stream:
+        lib_catalogue = _yaml.safe_load(stream)
+
+    if lib_catalogue[f"{library_name}"]["installed"] is True:
+        return True
 
     # specify the directory to download and extract the library to
     if library_path == "":
-        library_path = input(
-            "Specify the _Path to download and extract the library to \n"
-        )
+        library_path = input("Specify the full dir path to extract the library to \n")
 
         # the user can specify the current folder with a period '.'
         if library_path == ".":
@@ -74,16 +81,19 @@ def download_library(library_name="", library_url="", library_path=""):
     if len(library_path) == 0:
         return False
 
+    if library_url == "":
+        # get library url from the catalogue
+        if library_name in lib_catalogue:
+            library_url = lib_catalogue[f"{library_name}"]["dl_link"]
+        else:
+            raise ValueError(
+                "Library does not exist in the catalogue. \
+                Please provide a download link to download the library."
+            )
+
     # create the folder if it does not exist
     if not _os.path.exists(library_path):
         _os.makedirs(library_path)
-
-    # read _yaml file for available libraries in the catalogue
-    with open(curr_dir / "catalogue.yaml", "r") as stream:
-        lib_catalogue = _yaml.safe_load(stream)
-
-    if lib_catalogue[f"{library_name}"]["installed"] is True:
-        return True
 
     # download and extract the library to the folder, returns the dirpath with the extract foldername appended to the _Path
     library_dirpath = download_and_extract(library_url, library_path)

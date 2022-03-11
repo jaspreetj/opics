@@ -34,6 +34,6 @@ setup(
     install_requires=get_install_requires(),
     test_suite="tests",
     url="https://github.com/jaspreetj/opics",
-    version="0.3.2",
+    version="0.3.3",
     zip_safe=False,
 )
