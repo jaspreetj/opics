@@ -425,7 +425,7 @@ An interactive plot can be spawned by enabling the interactive option.
 Citing
 ~~~~~~
 
-``OPICS`` is written by Jaspreet Jhoja. You can cite the package as
+You can cite the package as
 
 ::
 
