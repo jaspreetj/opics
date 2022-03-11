@@ -435,15 +435,8 @@ Citing
      year = {2020},
      publisher = {GitHub},
      journal = {GitHub repository},
-     howpublished = {\url{https://github.com/SiEPIC-Kits/OPICS}}
+     howpublished = {\url{https://github.com/jaspreetj/OPICS}}
    }
-
-License
-~~~~~~~
-
-Copyright © 2022, Jaspreet Jhoja, `MIT License <https://github.com/jaspreetj/opics/blob/master/LICENSE>`__
-
-
 
 .. |opics_logo| image:: /docs/source/_static/_images/opics_logo.png
 
