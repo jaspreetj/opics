@@ -34,7 +34,7 @@ class componentModel:
         data_folder: PosixPath = None,
         filename: str = None,
         sparam_attr: str = None,
-        **kwargs
+        **kwargs,
     ) -> None:
 
         self.f = f
@@ -46,7 +46,6 @@ class componentModel:
         self.s = s
         if s is None:
             self.s = np.array((nports, nports))
-
         self.lambda_ = self.C * 1e6 / self.f
         self.componentParameters = []
         self.component_id = str(binascii.hexlify(os.urandom(4)))[2:-1]
@@ -128,7 +127,12 @@ class componentModel:
         return func(target_f)
 
     def write_sparameters(
-        self, dirpath: PosixPath, filename: str, f_data: ndarray, s_data: ndarray
+        self,
+        dirpath: PosixPath,
+        filename: str,
+        f_data: ndarray,
+        s_data: ndarray,
+        port_name_tag="port ",
     ) -> None:
         """Export the simulated s-parameters to a file.
 
@@ -141,10 +145,12 @@ class componentModel:
         with open(dirpath / filename, "w") as datafile_id:
             datalen = s_data.shape[0]
 
+            incr = 1  # increment indexes by 1, initiates indexes from 1, not 0
+
             for i in range(s_data.shape[1]):
                 for j in range(s_data.shape[2]):
                     datafile_id.write(
-                        "('port %d','TE',1,'port %d',1,'transmission')\n" % (i, j)
+                        f"('{port_name_tag}{i+incr}','TE',1,'{port_name_tag}{j+incr}',1,'transmission')\n"
                     )
                     datafile_id.write("(%d,3)\n" % (datalen))
 

@@ -20,7 +20,16 @@ def fromSI(value: str) -> float:
     Returns:
         float: the value in metric units.
     """
-    return float(value.replace("u", "e-6"))
+    if "mm" in value:
+        return float(value.replace("mm", "e-3"))
+    elif "um" in value:
+        return float(value.replace("um", "e-6"))
+    elif "u" in value:
+        return float(value.replace("u", "e-6"))
+    elif "nm" in value:
+        return float(value.replace("nm", "e-9"))
+    else:
+        return value
 
 
 def universal_sparam_filereader(
@@ -151,9 +160,8 @@ def universal_sparam_filereader(
         """
         with open(filename) as fid:
             # grating coupler compact models have 100 points for each s-matrix index
-            arrlen = 100
-
             lines = fid.readlines()
+            arrlen = len(lines)
             F = np.zeros(arrlen)
             S = np.zeros((arrlen, 2, 2), "complex128")
             for i in range(0, arrlen):
