@@ -51,15 +51,13 @@ class componentModel:
         self.component_id = str(binascii.hexlify(os.urandom(4)))[2:-1]
         self.nports = nports
 
-        self.port_references = {}
-        for _ in range(self.nports):
-            self.port_references[_] = _
-
+        self.port_references = {_: _ for _ in range(self.nports)}
         self.sparam_attr = sparam_attr
         self.sparam_file = filename
 
-        for key, value in kwargs.items():
-            self.componentParameters.append([key, str(value)])
+        self.componentParameters.extend(
+            [key, str(value)] for key, value in kwargs.items()
+        )
 
     def load_sparameters(self, data_folder: PosixPath, filename: str) -> ndarray:
         """
@@ -177,8 +175,6 @@ class componentModel:
             temp_data: Dictionary containing the plotting information\
                  to be used, including S-parameters data and plotting labels.
         """
-        temp_data = {}  # reformat data in an array
-
         ports_ = []  # ports the plot
 
         if xscale == "freq":
@@ -188,31 +184,28 @@ class componentModel:
             x_data = self.C * 1e6 / self.f
             xlabel = "Wavelength (um)"
 
-        temp_data["xdata"] = x_data
-        temp_data["xunit"] = xlabel
-
+        temp_data = {"xdata": x_data, "xunit": xlabel}
         if ports is None:
             nports = self.s.shape[-1]
             for i in range(nports):
-                for j in range(nports):
-                    ports_.append("S_%d_%d" % (i, j))
+                ports_.extend("S_%d_%d" % (i, j) for j in range(nports))
         else:
             ports_ = ["S_%d_%d" % (each[0], each[1]) for each in ports]
 
         for each_port in ports_:
             _, i, j = each_port.split("_")
-            if yscale == "log":
-                temp_data[each_port] = 10 * np.log10(
-                    np.square(np.abs(self.s[:, int(i), int(j)]))
-                )
-                temp_data["yunit"] = "dB"
-            elif yscale == "abs":
+            if yscale == "abs":
                 temp_data[each_port] = np.abs(self.s[:, int(i), int(j)])
                 temp_data["yunit"] = "abs"
             elif yscale == "abs_sq":
                 temp_data[each_port] = np.square(np.abs(self.s[:, int(i), int(j)]))
                 temp_data["yunit"] = "abs_sq"
 
+            elif yscale == "log":
+                temp_data[each_port] = 10 * np.log10(
+                    np.square(np.abs(self.s[:, int(i), int(j)]))
+                )
+                temp_data["yunit"] = "dB"
         return temp_data
 
     def plot_sparameters(
@@ -247,26 +240,25 @@ class componentModel:
         if ports is None:
             nports = self.s.shape[-1]
             for i in range(nports):
-                for j in range(nports):
-                    ports_.append("S_%d_%d" % (i, j))
+                ports_.extend("S_%d_%d" % (i, j) for j in range(nports))
         else:
             ports_ = ["S_%d_%d" % (each[0], each[1]) for each in ports]
 
         if not interactive:
             for each_port in ports_:
                 _, i, j = each_port.split("_")
-                if scale == "log":
-                    plt.plot(
-                        x_data,
-                        10 * np.log10(np.square(np.abs(self.s[:, int(i), int(j)]))),
-                    )
-                    plt.ylabel("Transmission (dB)")
-                elif scale == "abs":
+                if scale == "abs":
                     plt.plot(x_data, np.abs(self.s[:, int(i), int(j)]))
                     plt.ylabel("Transmission (normalized)")
                 elif scale == "abs_sq":
                     plt.plot(x_data, np.square(np.abs(self.s[:, int(i), int(j)])))
                     plt.ylabel("Transmission (normalized^2)")
+                elif scale == "log":
+                    plt.plot(
+                        x_data,
+                        10 * np.log10(np.square(np.abs(self.s[:, int(i), int(j)]))),
+                    )
+                    plt.ylabel("Transmission (dB)")
             plt.xlabel(xlabel)
             plt.xlim(left=np.min(x_data), right=np.max(x_data))
             plt.tight_layout()

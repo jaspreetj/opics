@@ -42,14 +42,9 @@ def solve_tasks(
         new_net.remove(p2)
 
         new_component.nports = len(new_net)
-        port_references = {}
-        for _ in range(new_component.nports):
-            port_references[_] = _
+        port_references = {_: _ for _ in range(new_component.nports)}
         new_component.port_references = port_references
 
-        return new_component, new_net
-
-    # If pin occurances are in different components:
     else:
         combination_f = F
         combination_s = connect_s(components[0].s, ntp[1], components[1].s, ntp[3])
@@ -63,7 +58,8 @@ def solve_tasks(
         new_component = componentModel(
             f=combination_f, s=combination_s, nets=new_net, nports=len(new_net)
         )
-        return new_component, new_net
+
+    return new_component, new_net
 
 
 class Network:
@@ -91,9 +87,7 @@ class Network:
         if self.f is None:
             self.f = F
 
-        self.network_id = (
-            network_id if network_id else str(binascii.hexlify(os.urandom(4)))[2:-1]
-        )
+        self.network_id = network_id or str(binascii.hexlify(os.urandom(4)))[2:-1]
         self.current_components = {}
         self.current_connections = []
         self.global_netlist = {}
@@ -277,11 +271,11 @@ class Network:
 
         t_components = self.current_components
         t_nets = self.global_netlist
-        t_connections = [i for i in range(len(self.current_connections))]
+        t_connections = list(range(len(self.current_connections)))
 
         _connections_in_use = set()
 
-        while len(t_connections) > 0:
+        while t_connections:
 
             # track components and connections in use
             _components_in_use = set()
@@ -358,10 +352,9 @@ class Network:
                 t_components[each_result[0].component_id] = each_result[0]
                 t_nets[each_result[0].component_id] = each_result[1]
 
-        if self.mp_config["enabled"]:
-            if self.mp_config["close_pool"]:
-                self.pool.close()
-                self.pool.join()
+        if self.mp_config["enabled"] and self.mp_config["close_pool"]:
+            self.pool.close()
+            self.pool.join()
 
         t_components[list(t_components.keys())[-1]].component_id = self.network_id
         self.sim_result = t_components[list(t_components.keys())[-1]]
@@ -432,7 +425,7 @@ def inst_components(component_data: dict):
     temp_component = component_data["component"](**component_data["params"])
 
     temp_component.component_id = (
-        temp_component.component_id + "_" + str(binascii.hexlify(os.urandom(4)))[2:-1]
+        f"{temp_component.component_id}_{str(binascii.hexlify(os.urandom(4)))[2:-1]}"
         if "component_id" not in component_data
         else component_data["component_id"]
     )

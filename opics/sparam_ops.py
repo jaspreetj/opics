@@ -52,26 +52,23 @@ def connect_s(
 
     """
 
-    if create_composite_matrix:
-        if port_idx_A > A.shape[-1] - 1 or port_idx_B > B.shape[-1] - 1:
-            raise (ValueError("port indices are out of range"))
-
-        nf = A.shape[0]  # num frequency points
-        nA = A.shape[1]  # num ports on A
-        nB = B.shape[1]  # num ports on B
-        nC = nA + nB  # num ports on C
-
-        # create composite matrix, appending each sub-matrix diagonally
-        C = np.zeros((nf, nC, nC), dtype=np.complex128)
-        C[:, :nA, :nA] = A.copy()
-        C[:, nA:, nA:] = B.copy()
-
-        # call innerconnect_s() on composit matrix C
-        mat_result = innerconnect_s(C, port_idx_A, nA + port_idx_B)
-        return mat_result
-    else:
+    if not create_composite_matrix:
         # call innerconnect_s() on non-composit matrix A
         return innerconnect_s(A, port_idx_A, port_idx_B)
+    if port_idx_A > A.shape[-1] - 1 or port_idx_B > B.shape[-1] - 1:
+        raise (ValueError("port indices are out of range"))
+
+    nf = A.shape[0]  # num frequency points
+    nA = A.shape[1]  # num ports on A
+    nB = B.shape[1]  # num ports on B
+    nC = nA + nB  # num ports on C
+
+    # create composite matrix, appending each sub-matrix diagonally
+    C = np.zeros((nf, nC, nC), dtype=np.complex128)
+    C[:, :nA, :nA] = A.copy()
+    C[:, nA:, nA:] = B.copy()
+
+    return innerconnect_s(C, port_idx_A, nA + port_idx_B)
 
 
 def innerconnect_s(A: ndarray, port_idx_A: int, port_idx_B: int) -> ndarray:
