@@ -83,7 +83,7 @@ def universal_sparam_filereader(
         F = []
         S = []
         with open(filename, "r") as fid:
-            for i in range(5):
+            for _ in range(5):
                 line = fid.readline()
             line = fid.readline()
             numrows = int(tuple(line[1:-2].split(","))[0])
@@ -164,7 +164,7 @@ def universal_sparam_filereader(
             arrlen = len(lines)
             F = np.zeros(arrlen)
             S = np.zeros((arrlen, 2, 2), "complex128")
-            for i in range(0, arrlen):
+            for i in range(arrlen):
                 words = lines[i].split()
                 F[i] = float(words[0])
                 S[i, 0, 0] = cm.rect(float(words[1]), float(words[2]))
@@ -190,7 +190,7 @@ def LUT_reader(filedir: PosixPath, lutfilename: str, lutdata: List[List[str]]):
 
     for node in root.iter("association"):
         sample = [[each.attrib["name"], each.text] for each in node.iter("value")]
-        if sorted(sample[0:-1]) == sorted(lutdata):
+        if sorted(sample[:-1]) == sorted(lutdata):
             break
     sparam_file = sample[-1][1].split(";")
     return (sparam_file, xml, node)
@@ -227,7 +227,7 @@ def LUT_processor(
         np.savez(filedir / npz_file, f=sdata[0], s=sdata[1])
 
         # update xml file
-        sparam_file.append(npz_file + ".npz")
+        sparam_file.append(f"{npz_file}.npz")
         sparam_file = list(set(sparam_file))
 
         for each in node.iter("value"):
@@ -251,7 +251,7 @@ def NetlistProcessor(spice_filepath, Network, libraries, c_, circuitData, verbos
     """
     if verbose:
         for key, value in circuitData.items():
-            print(key, str(value))
+            print(key, value)
 
     # define frequency range and resolution
     freq = np.linspace(
@@ -270,10 +270,10 @@ def NetlistProcessor(spice_filepath, Network, libraries, c_, circuitData, verbos
             if each[0][0] != "_"
         ]
     )
-    libs_comps = {}
-    for each_lib in list(set(circuitData["compLibs"])):
-        # temp_comps = dict(inspect.getmembers(all_libraries[each_lib], inspect.isclass))
-        libs_comps[each_lib] = all_libraries[each_lib].component_factory
+    libs_comps = {
+        each_lib: all_libraries[each_lib].component_factory
+        for each_lib in list(set(circuitData["compLibs"]))
+    }
 
     # add circuit components
     for i in range(len(circuitData["compModels"])):
@@ -346,129 +346,119 @@ class netlistParser:
             each_line = re.sub(" +", " ", each_line.strip())  # remove empty lines
             if each_line.startswith("*"):
                 continue
-            else:
-                each_line = "".join(
-                    [
-                        "".join(filter(None, each_section.split(" ")))
-                        if ('"' in each_section)
-                        else each_section
-                        for each_section in re.split(
-                            r"""("[^"]*"|'[^']*')""", each_line
-                        )
-                    ]
-                )
-                temp_data = each_line.split(" ")
+            each_line = "".join(
+                [
+                    "".join(filter(None, each_section.split(" ")))
+                    if ('"' in each_section)
+                    else each_section
+                    for each_section in re.split(r"""("[^"]*"|'[^']*')""", each_line)
+                ]
+            )
+            temp_data = each_line.split(" ")
 
-                if len(temp_data) > 1:  # if line is not an empty one
+            if len(temp_data) > 1:  # if line is not an empty one
 
-                    MC_location = []
+                MC_location = []
 
-                    if temp_data[0] == ".subckt":
-                        circuitID = temp_data[1]
-                        inp = temp_data[2]
-                        out = [temp_data[x] for x in range(3, len(temp_data))]
-                        seek_component = 1
+                if temp_data[0] == ".subckt":
+                    circuitID = temp_data[1]
+                    inp = temp_data[2]
+                    out = [temp_data[x] for x in range(3, len(temp_data))]
+                    seek_component = 1
 
-                    elif temp_data[0] == ".param":
-                        continue
+                elif temp_data[0] == ".param":
+                    continue
 
-                    elif temp_data[0] == ".ends":
-                        seek_component = 0
+                elif temp_data[0] == ".ends":
+                    seek_component = 0
 
-                    elif temp_data[0] == ".ona":
-                        seek_ona = 1
+                elif temp_data[0] == ".ona":
+                    seek_ona = 1
 
-                    elif seek_ona == 1:
-                        # ONA related data
-                        if len(temp_data) < 3:
-                            temp_data = [0] + temp_data[-1].split("=")
+                elif seek_ona == 1:
+                    # ONA related data
+                    if len(temp_data) < 3:
+                        temp_data = [0] + temp_data[-1].split("=")
 
-                        if temp_data[1] == "orthogonal_identifier":
-                            orthogonal_ID = int(temp_data[-1])
+                    if temp_data[1] == "orthogonal_identifier":
+                        orthogonal_ID = int(temp_data[-1])
 
-                        elif temp_data[1] == "start":
-                            freq_data.append(float(temp_data[-1]))
+                    elif temp_data[1] in ["start", "stop"]:
+                        freq_data.append(float(temp_data[-1]))
 
-                        elif temp_data[1] == "stop":
-                            freq_data.append(float(temp_data[-1]))
+                    elif temp_data[1] == "number_of_points":
+                        freq_data.append(int(temp_data[-1]))
 
-                        elif temp_data[1] == "number_of_points":
-                            freq_data.append(int(temp_data[-1]))
+                elif seek_component == 1:
+                    # otherwise its component data
+                    circuitLabels.append(temp_data[0])
+                    temp_ports = []
+                    found_ports = 0
+                    found_library = 0
+                    for i in range(1, len(temp_data)):
+                        # if its an optical port
+                        if (
+                            "N$" in temp_data[i]
+                            and "N$None".lower() != temp_data[i].lower()
+                        ):
+                            temp_ports.append(int(temp_data[i].replace("N$", "")))
+                            found_ports = 1
 
-                    elif seek_component == 1:
-                        # otherwise its component data
-                        circuitLabels.append(temp_data[0])
-                        temp_ports = []
-                        found_ports = 0
-                        found_library = 0
-                        for i in range(1, len(temp_data)):
-                            # if its an optical port
-                            if (
-                                "N$" in temp_data[i]
-                                and "N$None".lower() != temp_data[i].lower()
-                            ):
-                                temp_ports.append(int(temp_data[i].replace("N$", "")))
+                        elif "N$None".lower() == temp_data[i].lower():
+                            temp_ports.append(free_node_idx)
+                            free_node_idx -= 1
+                            found_ports = 1
+
+                        elif inp == temp_data[i]:
+                            temp_ports.append(free_node_idx)
+                            inp_net = free_node_idx
+                            free_node_idx -= 1
+                            found_ports = 1
+
+                        elif out[0] == temp_data[i]:
+                            temp_ports.append(free_node_idx)
+                            out_net.append(free_node_idx)
+                            free_node_idx -= 1
+
+                            if len(out) > 1:
+                                out.pop(0)
+
+                            if len(out) == 0:
                                 found_ports = 1
 
-                            elif "N$None".lower() == temp_data[i].lower():
-                                temp_ports.append(free_node_idx)
-                                free_node_idx -= 1
-                                found_ports = 1
+                        elif found_ports == 1:
+                            circuitModels.append(temp_data[i])
+                            temp_cls_atrr = {}  # deepcopy(lib[temp_data[i]].cls_attrs)
+                            found_ports = -1
 
-                            elif inp == temp_data[i]:
-                                temp_ports.append(free_node_idx)
-                                inp_net = free_node_idx
-                                free_node_idx -= 1
-                                found_ports = 1
-
-                            elif out[0] == temp_data[i]:
-                                temp_ports.append(free_node_idx)
-                                out_net.append(free_node_idx)
-                                free_node_idx -= 1
-
-                                if len(out) > 1:
-                                    out.pop(0)
-
-                                if len(out) == 0:
-                                    found_ports = 1
-
-                            elif found_ports == 1 and "N$" not in temp_data[i]:
-                                circuitModels.append(temp_data[i])
-                                temp_cls_atrr = (
-                                    {}
-                                )  # deepcopy(lib[temp_data[i]].cls_attrs)
-                                found_ports = -1
-
-                            elif "lay" in temp_data[i] or "sch" in temp_data[i]:
-                                if "lay" in temp_data[i]:
-                                    MC_location.append(
-                                        fromSI(temp_data[i].split("=")[-1]) * 1e6
-                                    )
-
-                                # ignore layout and schematic position data for now.
-                                # adapt opics models to accept this data
-                                # they are component parameters
-                            elif "library" in temp_data[i]:
-                                # cprint(temp_data[i])
-                                temp_lib = (
-                                    temp_data[i].replace('"', "").split("=")[1].split()
+                        elif "lay" in temp_data[i] or "sch" in temp_data[i]:
+                            if "lay" in temp_data[i]:
+                                MC_location.append(
+                                    fromSI(temp_data[i].split("=")[-1]) * 1e6
                                 )
-                                componentLibs.append(
-                                    temp_lib[-1].split("/")[-1].lower()
-                                )
-                                found_library = 1
 
-                            elif "=" in temp_data[i] and found_library == 1:
-                                # if its a components' attribute
-                                temp_attr = temp_data[i].split("=")
-                                # print(temp_attr[0])
-                                # if(temp_attr[0] in temp_cls_atrr):
-                                temp_cls_atrr[temp_attr[0]] = temp_attr[1].strip('"')
+                            # ignore layout and schematic position data for now.
+                            # adapt opics models to accept this data
+                            # they are component parameters
+                        elif "library" in temp_data[i]:
+                            # cprint(temp_data[i])
+                            temp_lib = (
+                                temp_data[i].replace('"', "").split("=")[1].split()
+                            )
+                            componentLibs.append(temp_lib[-1].split("/")[-1].lower())
+                            found_library = 1
 
-                        componentAttrs.append(temp_cls_atrr)
-                        circuitNets.append(temp_ports)
-                        if bool(MC_location):
-                            component_locations.append(MC_location)
+                        elif "=" in temp_data[i] and found_library == 1:
+                            # if its a components' attribute
+                            temp_attr = temp_data[i].split("=")
+                            # print(temp_attr[0])
+                            # if(temp_attr[0] in temp_cls_atrr):
+                            temp_cls_atrr[temp_attr[0]] = temp_attr[1].strip('"')
+
+                    componentAttrs.append(temp_cls_atrr)
+                    circuitNets.append(temp_ports)
+                    if bool(MC_location):
+                        component_locations.append(MC_location)
 
         circuitConns = list(set(list(itertools.chain(*circuitNets))))
         # remove IOs from component connections' list

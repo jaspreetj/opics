@@ -1,25 +1,25 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: 'v4.1.0'
+    rev: 'b0f06dc9f2260909f3423243de180edfc823ec5a'
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/hakancelik96/unimport
-    rev: 0.9.4
+    rev: df8eb1a4c91acb84da197828af8157708968b596
     hooks:
       - id: unimport
         args: [--remove, --requirements, --include-star-import]
   - repo: https://github.com/psf/black
-    rev: '22.1.0'
+    rev: '6debce63bc2429b1680f8838592f2e56e3df6b27'
     hooks:
       - id: black
   - repo: https://gitlab.com/pycqa/flake8
-    rev: '3.9.2'
+    rev: '21d3c70d676007470908d39b73f0521d39b3b997'
     hooks:
       - id: flake8
   - repo: https://github.com/kynan/nbstripout
-    rev: 0.5.0
+    rev: 8cafdcc393232045208137698dbeb42d6e0dd9e8
     hooks:
       - id: nbstripout
         files: '.ipynb'

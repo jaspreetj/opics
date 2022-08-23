@@ -5,6 +5,21 @@ from opics.libraries.catalogue_mgmt import download_library, remove_library
 import sys
 
 _curr_dir = _pathlib.Path(__file__).parent.resolve()
+catalogue = _curr_dir / "catalogue.yaml"
+
+default_catalog = """
+ebeam:
+  dl_link: https://github.com/jaspreetj/opics_ebeam/archive/refs/tags/0.3.34.zip
+  installed: false
+  library_path:
+  name: ebeam
+  version: 0.3.34
+"""
+
+
+if not catalogue.exists():
+    catalogue.write_text(default_catalog)
+    print(f"write {catalogue!r}")
 
 # read yaml file for available libraries in the catalogue
 with open(_curr_dir / "catalogue.yaml", "r") as _stream:
@@ -30,3 +45,16 @@ __all__ = [
     "download_library",
     "remove_library",
 ]
+
+
+if __name__ == "__main__":
+    import os
+    import pathlib
+    import opics as op
+
+    home = pathlib.Path.home()
+    cwd = pathlib.Path.cwd()
+    dirpath = home / ".opics"
+
+    installation_path = pathlib.Path(os.environ.get("USERPROFILE", dirpath))
+    op.libraries.download_library("ebeam", str(installation_path))
